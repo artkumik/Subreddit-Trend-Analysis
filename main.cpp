@@ -2,6 +2,9 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <fstream> 
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -81,7 +84,42 @@ int submenu_selection(){
     }
 }
 
+void read_csv(string path){
+    ifstream file(path);
+
+    if(!file.is_open()){
+        cout << "error" << endl;
+        return;
+    }
+
+    string line;
+
+    while(getline(file,line)){
+        stringstream ss(line);
+        string cell;
+        vector<string> row_data;
+
+        while(getline(ss,cell,',')){
+            row_data.push_back(cell);
+        }
+
+        for (const string &data : row_data)
+        {
+            cout << data << "\t";
+        }
+        cout << endl;
+    }
+
+    file.close();
+    return;
+}
+
 int main(){
+
+    //testing, make sure to remove in final version 
+    //replace AskReddit with the name of the csv
+    read_csv("processed_data/AskReddit.csv");
+
     int subreddit;
     int option_chose;
     bool submenu;
@@ -140,8 +178,5 @@ int main(){
             cout << "" << endl;
         }
     }
-
-
-
     return 1;
 }
