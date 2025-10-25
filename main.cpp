@@ -94,19 +94,23 @@ void read_csv(string path){
 
     string line;
 
-    while(getline(file,line)){
+    while (getline(file, line))
+    {
         stringstream ss(line);
         string cell;
         vector<string> row_data;
+        vector<string> test;
 
-        while(getline(ss,cell,',')){
+        while (getline(ss, cell, ','))
+        {
             row_data.push_back(cell);
         }
 
-        for (const string &data : row_data)
-        {
-            cout << data << "\t";
-        }
+        cout << "upvotes : " << row_data[0] << endl;
+        cout << "downvotes : " << row_data[1] << endl;
+        cout << "title : " << row_data[2] << endl;
+        cout << "content : " << row_data[3] << endl;
+
         cout << endl;
     }
 
