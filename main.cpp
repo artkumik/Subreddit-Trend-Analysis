@@ -2,20 +2,29 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include <fstream> 
+#include <fstream>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
+#include <cctype>
 
 using namespace std;
 
-void intro(){
+//menu functions
+void intro()
+{
+    //printing for title and by
+
     cout << "****************************************************" << endl;
     cout << "Welcome to the project 'Subreddit Trend Analysis'" << endl;
     cout << "by: Shyamaa Karthik, Artur Kumik, Ahnaf Raihan" << endl;
     cout << "****************************************************" << endl;
 }
 
-int subreddit_selection(){
+int subreddit_selection()
+{
+    //menu for subreddit selection
+
     cout << "Select an available subreddit : " << endl;
     cout << "   1. r/placeholder1" << endl;
     cout << "   2. r/placeholder2" << endl;
@@ -27,7 +36,8 @@ int subreddit_selection(){
     string input;
     int input_stoi;
 
-    while(true){
+    while (true)
+    {
 
         cout << "Input (1-5):";
         cin >> input;
@@ -35,8 +45,9 @@ int subreddit_selection(){
 
         auto it_found = find(subreddits.begin(), subreddits.end(), input_stoi);
         if (it_found != subreddits.end())
-        {   
-            if(input_stoi == 5){
+        {
+            if (input_stoi == 5)
+            {
                 cout << "Exiting the program, have a nice day!" << endl;
             }
             return input_stoi;
@@ -48,7 +59,10 @@ int subreddit_selection(){
     }
 }
 
-int submenu_selection(){
+int submenu_selection()
+{
+    //submenu after subreddit is chosen
+
     cout << "What would you like to do? " << endl;
     cout << "   1. List top posts for my subreddit" << endl;
     cout << "   2. List bottom posts for my subreddit" << endl;
@@ -84,10 +98,26 @@ int submenu_selection(){
     }
 }
 
-void read_csv(string path){
+//reading csv
+string processString(std::string s)
+{
+    //removes punctuation and sets the string to lowercase 
+    //useful for normalization and getting consistent words
+    //optional function, dont use if dont need
+
+    s.erase(remove_if(s.begin(), s.end(), ::ispunct), s.end());
+    transform(s.begin(), s.end(), s.begin(), ::tolower);
+
+    return s;
+}
+
+void read_csv(string path)
+{
+    //reads csv given path and can be modified to place values into a vector
     ifstream file(path);
 
-    if(!file.is_open()){
+    if (!file.is_open())
+    {
         cout << "error" << endl;
         return;
     }
@@ -108,8 +138,8 @@ void read_csv(string path){
 
         cout << "upvotes : " << row_data[0] << endl;
         cout << "downvotes : " << row_data[1] << endl;
-        cout << "title : " << row_data[2] << endl;
-        cout << "content : " << row_data[3] << endl;
+        cout << "title : " << processString(row_data[2]) << endl;
+        cout << "content : " << processString(row_data[3]) << endl;
 
         cout << endl;
     }
@@ -118,36 +148,40 @@ void read_csv(string path){
     return;
 }
 
-int main(){
+int main()
+{
 
-    //testing, make sure to remove in final version 
-    //replace AskReddit with the name of the csv
+    // testing, make sure to remove in final version
+    // replace AskReddit with the name of the csv
     read_csv("processed_data/AskReddit.csv");
 
     int subreddit;
     int option_chose;
     bool submenu;
 
-    //on startup
+    // on startup
     intro();
 
     bool active = true;
-    while(active){
+    while (active)
+    {
         submenu = true;
 
-        //subreddit selection and exiting
+        // subreddit selection and exiting
         subreddit = subreddit_selection();
-        if(subreddit == 5){
+        if (subreddit == 5)
+        {
             active = false;
             return 1;
         }
 
-        //options once subreddit is chosen
-        while(submenu){
+        // options once subreddit is chosen
+        while (submenu)
+        {
             option_chose = submenu_selection();
 
-            //change options in here based on what subreddit and the different data structures
-            // make sure to keep the break or all will break
+            // change options in here based on what subreddit and the different data structures
+            //  make sure to keep the break or all will break
             switch (option_chose)
             {
             case 1:
@@ -166,12 +200,12 @@ int main(){
                 cout << "Printing dataset information" << endl;
                 break;
             case 6:
-                //change subreddit case
+                // change subreddit case
                 cout << "Choosing another subreddit" << endl;
                 submenu = false;
                 break;
             case 7:
-                //exit case
+                // exit case
                 submenu = false;
                 active = false;
                 return 1;
