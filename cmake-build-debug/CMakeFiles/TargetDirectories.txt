@@ -1,0 +1,3 @@
+C:/Users/anaai/CLionProjects/Subreddit-Trend-Analysis/cmake-build-debug/CMakeFiles/Subreddit_Trend_Analysis.dir
+C:/Users/anaai/CLionProjects/Subreddit-Trend-Analysis/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/anaai/CLionProjects/Subreddit-Trend-Analysis/cmake-build-debug/CMakeFiles/rebuild_cache.dir

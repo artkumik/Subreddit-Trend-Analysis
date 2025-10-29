@@ -7,7 +7,8 @@
 #include <sstream>
 #include <algorithm>
 #include <cctype>
-
+#include <map>
+#include "Heap.h"
 using namespace std;
 
 //menu functions
@@ -26,10 +27,10 @@ int subreddit_selection()
     //menu for subreddit selection
 
     cout << "Select an available subreddit : " << endl;
-    cout << "   1. r/placeholder1" << endl;
-    cout << "   2. r/placeholder2" << endl;
-    cout << "   3. r/placeholder3" << endl;
-    cout << "   4. r/placeholder4" << endl;
+    cout << "   1. r/AskReddit" << endl;
+    cout << "   2. r/explainlikeimfive" << endl;
+    cout << "   3. r/Showerthoughts" << endl;
+    cout << "   4. r/techsupport" << endl;
     cout << "   5. Exit Program" << endl;
 
     vector<int> subreddits = {1, 2, 3, 4, 5};
@@ -150,11 +151,14 @@ void read_csv(string path)
 
 int main()
 {
-
+    std::map<int, string> paths = {
+        {1, "processed_data/AskReddit.csv"},
+{2, "processed_data/explainlikeimfive.csv"},
+{3, "processed_data/Showerthoughts.csv"},
+{4, "processed_data/techsupport.csv"}
+    };
     // testing, make sure to remove in final version
     // replace AskReddit with the name of the csv
-    read_csv("processed_data/AskReddit.csv");
-
     int subreddit;
     int option_chose;
     bool submenu;
@@ -184,12 +188,28 @@ int main()
             //  make sure to keep the break or all will break
             switch (option_chose)
             {
-            case 1:
+            case 1: { //Prints top 15 posts
+                auto it = paths.find(subreddit);
+                std::priority_queue<Post,std::vector<Post>, MinUpvotes> topPosts;
+                std::priority_queue<Post,std::vector<Post>, MaxUpvotes> bottomPosts;
+                createLists(it->second,15,bottomPosts,topPosts);
+                vector<Post> posts;
+                createtopvector(topPosts, posts);
                 cout << "Listing top posts for subreddit" << endl;
+                printvector(posts);
                 break;
-            case 2:
+            }
+            case 2: { //Prints bottom 15 posts
+                auto it = paths.find(subreddit);
+                std::priority_queue<Post,std::vector<Post>, MinUpvotes> topPosts;
+                std::priority_queue<Post,std::vector<Post>, MaxUpvotes> bottomPosts;
+                createLists(it->second,15,bottomPosts,topPosts);
+                vector<Post> posts;
+                createbottomvector(bottomPosts, posts);
                 cout << "Listing bottom posts for subreddit" << endl;
+                printvector(posts);
                 break;
+            }
             case 3:
                 cout << "Listing top words for subreddit" << endl;
                 break;

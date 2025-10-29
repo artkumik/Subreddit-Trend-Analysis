@@ -1,0 +1,15 @@
+# ninja log v6
+20	1027	7834069500648525	CMakeFiles/Subreddit_Trend_Analysis.dir/main.cpp.obj	6c9df8770a4b5df9
+13	996	7834073246050843	CMakeFiles/Subreddit_Trend_Analysis.dir/Heap.cpp.obj	e1c860ef90050296
+997	1248	7834073255900618	Subreddit_Trend_Analysis.exe	54ba9d3eb092dbd9
+7	508	7834075350821661	build.ninja	3b8956a50fc8d4d7
+55	912	7834075352886950	CMakeFiles/Subreddit_Trend_Analysis.dir/Heap.cpp.obj	50702a32aba5864f
+61	983	7834075352951933	CMakeFiles/Subreddit_Trend_Analysis.dir/main.cpp.obj	1b700c6a08948975
+983	1576	7834075362179370	Subreddit_Trend_Analysis.exe	dd15c62f321d5c7d
+6	1008	7834078150531206	CMakeFiles/Subreddit_Trend_Analysis.dir/Heap.cpp.obj	50702a32aba5864f
+1021	1562	7834078160688865	Subreddit_Trend_Analysis.exe	dd15c62f321d5c7d
+8	987	7834085366883012	CMakeFiles/Subreddit_Trend_Analysis.dir/Heap.cpp.obj	50702a32aba5864f
+19	1070	7834085366996710	CMakeFiles/Subreddit_Trend_Analysis.dir/main.cpp.obj	1b700c6a08948975
+1071	1618	7834085377501643	Subreddit_Trend_Analysis.exe	dd15c62f321d5c7d
+8	966	7834089750258196	CMakeFiles/Subreddit_Trend_Analysis.dir/Heap.cpp.obj	50702a32aba5864f
+967	1483	7834089759847031	Subreddit_Trend_Analysis.exe	dd15c62f321d5c7d
