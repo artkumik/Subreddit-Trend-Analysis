@@ -32,7 +32,7 @@ void createbottomvector(std::priority_queue<Post, std::vector<Post>, MaxUpvotes>
 void printvector(std::vector<Post>& v); // print helper
 #endif //HEAP_H
 
-//copied from Heap.cpp (i was getting errors)
+// function declarations
 bool MinUpvotes::operator()(const Post &a, const Post &b) const
 {
     return a.upvotes > b.upvotes;
