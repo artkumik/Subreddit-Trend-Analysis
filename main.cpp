@@ -56,7 +56,7 @@ int subreddit_selection()
         }
         else
         {
-            cout << input_stoi << " is not an available subreddit. Try again." << std::endl;
+            cout << input_stoi << " is not an available subreddit. Try again." << endl;
         }
     }
 }
@@ -95,13 +95,13 @@ int submenu_selection()
         }
         else
         {
-            cout << input_stoi << " is not an available menu option. Try again." << std::endl;
+            cout << input_stoi << " is not an available menu option. Try again." << endl;
         }
     }
 }
 
 //reading csv
-string processString(std::string s)
+string processString(string s)
 {
     //removes punctuation and sets the string to lowercase 
     //useful for normalization and getting consistent words
@@ -152,7 +152,7 @@ void read_csv(string path)
 
 int main()
 {
-    std::map<int, string> paths = {
+    map<int, string> paths = {
         {1, "processed_data/AskReddit.csv"},
 {2, "processed_data/explainlikeimfive.csv"},
 {3, "processed_data/Showerthoughts.csv"},
@@ -191,8 +191,8 @@ int main()
             {
             case 1: { //Prints top 15 posts
                 auto it = paths.find(subreddit);
-                std::priority_queue<Post,std::vector<Post>, MinUpvotes> topPosts;
-                std::priority_queue<Post,std::vector<Post>, MaxUpvotes> bottomPosts;
+                priority_queue<Post,vector<Post>, MinUpvotes> topPosts;
+                priority_queue<Post,vector<Post>, MaxUpvotes> bottomPosts;
                 createLists(it->second,15,bottomPosts,topPosts);
                 vector<Post> posts;
                 createtopvector(topPosts, posts);
@@ -202,8 +202,8 @@ int main()
             }
             case 2: { //Prints bottom 15 posts
                 auto it = paths.find(subreddit);
-                std::priority_queue<Post,std::vector<Post>, MinUpvotes> topPosts;
-                std::priority_queue<Post,std::vector<Post>, MaxUpvotes> bottomPosts;
+                priority_queue<Post,vector<Post>, MinUpvotes> topPosts;
+                priority_queue<Post,vector<Post>, MaxUpvotes> bottomPosts;
                 createLists(it->second,15,bottomPosts,topPosts);
                 vector<Post> posts;
                 createbottomvector(bottomPosts, posts);
