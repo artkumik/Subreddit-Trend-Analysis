@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cctype>
 #include <map>
+#include <queue>
 #include "Heap.h"
 using namespace std;
 
