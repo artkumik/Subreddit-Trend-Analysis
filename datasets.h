@@ -20,7 +20,7 @@ using namespace std;
 string processString(string s)
 {
     // removes punctuation and sets the string to lowercase
-    s.erase(remove_if(s.begin(), s.end(), ::ispunct), s.end());
+    replace_if(s.begin(), s.end(), [](unsigned char c){ return std::ispunct(c); }, ' ');
     transform(s.begin(), s.end(), s.begin(), ::tolower);
 
     return s;
@@ -104,6 +104,7 @@ void dataset_info(string path)
         //cout << endl;
     }
 
+    cout << "Number of Posts : " << post_count << endl;
     cout << "Most Upvotes per Post : " << max_upvotes << endl;
     cout << "Least Upvotes per Post : " << min_upvotes << endl;
     cout << "Most downvotes per Post : " << max_downvotes << endl;

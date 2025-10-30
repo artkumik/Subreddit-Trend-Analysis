@@ -113,6 +113,12 @@ int main()
         {3, "processed_data/Showerthoughts.csv"},
         {4, "processed_data/techsupport.csv"}
     };
+
+    map<int, string> names = {
+        {1, "r/AskReddit"},
+        {2, "r/explainlikeimfive"},
+        {3, "r/Showerthoughts"},
+        {4, "r/techsupport"}};
     // testing, make sure to remove in final version
     // replace AskReddit with the name of the csv
     int subreddit;
@@ -151,7 +157,7 @@ int main()
                 createLists(it->second,15,bottomPosts,topPosts);
                 vector<Post> posts;
                 createtopvector(topPosts, posts);
-                cout << "Listing top posts for subreddit" << endl;
+                cout << "Listing top posts for " << names[subreddit] << endl;
                 printvector(posts);
                 break;
             }
@@ -162,7 +168,7 @@ int main()
                 createLists(it->second,15,bottomPosts,topPosts);
                 vector<Post> posts;
                 createbottomvector(bottomPosts, posts);
-                cout << "Listing bottom posts for subreddit" << endl;
+                cout << "Listing bottom posts for "  << names[subreddit] << endl;
                 printvector(posts);
                 break;
             }
@@ -175,7 +181,7 @@ int main()
                     break;
                 }
 
-                cout << "Listing top words for subreddit" << endl;
+                cout << "Listing top words for " << names[subreddit] << endl;
                 auto topWords = getTopWordsByAverageUpvotes(it->second, 15);
                 if (topWords.empty())
                 {
@@ -187,7 +193,7 @@ int main()
                 }
                 break;
             }
-                case 4:
+            case 4:
             {
                 auto it = paths.find(subreddit);
                 if (it == paths.end())
@@ -196,7 +202,7 @@ int main()
                     break;
                 }
 
-                cout << "Listing bottom words for subreddit" << endl;
+                cout << "Listing bottom words for subreddit " << names[subreddit]<< endl;
                 auto bottomWords = getBottomWordsByAverageUpvotes(it->second, 15);
                 if (bottomWords.empty())
                 {
@@ -209,7 +215,7 @@ int main()
                 break;
             }
             case 5:
-                cout << "Printing dataset information for " << paths[subreddit] << endl;
+                cout << "Printing dataset information for " << names[subreddit] << endl;
                 dataset_info(paths[subreddit]);
                 break;
             case 6:
