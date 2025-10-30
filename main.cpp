@@ -9,8 +9,10 @@
 #include <cctype>
 #include <map>
 #include <queue>
+#include <iomanip>
 #include "Heap.h"
 #include "datasets.h"
+#include "word_analysis.h"
 using namespace std;
 
 //menu functions
@@ -165,11 +167,47 @@ int main()
                 break;
             }
             case 3:
+            {
+                auto it = paths.find(subreddit);
+                if (it == paths.end())
+                {
+                    cout << "Unable to locate the selected subreddit dataset." << endl;
+                    break;
+                }
+
                 cout << "Listing top words for subreddit" << endl;
+                auto topWords = getTopWordsByAverageUpvotes(it->second, 15);
+                if (topWords.empty())
+                {
+                    cout << "No word statistics are available yet for this dataset." << endl;
+                }
+                else
+                {
+                    printWordStats(topWords);
+                }
                 break;
-            case 4:
+            }
+                case 4:
+            {
+                auto it = paths.find(subreddit);
+                if (it == paths.end())
+                {
+                    cout << "Unable to locate the selected subreddit dataset." << endl;
+                    break;
+                }
+
                 cout << "Listing bottom words for subreddit" << endl;
+                auto bottomWords = getBottomWordsByAverageUpvotes(it->second, 15);
+                if (bottomWords.empty())
+                {
+                    cout << "No word statistics are available yet for this dataset." << endl;
+                }
+                else
+                {
+                    printWordStats(bottomWords);
+                }
                 break;
+            }
             case 5:
                 cout << "Printing dataset information for " << paths[subreddit] << endl;
                 dataset_info(paths[subreddit]);
