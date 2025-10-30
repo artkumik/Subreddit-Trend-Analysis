@@ -175,41 +175,35 @@ int main()
             case 3:
             {
                 auto it = paths.find(subreddit);
-                if (it == paths.end())
-                {
+                if (it == paths.end()){
                     cout << "Unable to locate the selected subreddit dataset." << endl;
                     break;
                 }
 
-                cout << "Listing top words for " << names[subreddit] << endl;
+                cout << "Listing top words for subreddit" << endl;
                 auto topWords = getTopWordsByAverageUpvotes(it->second, 15);
-                if (topWords.empty())
-                {
+                if (topWords.empty()){
                     cout << "No word statistics are available yet for this dataset." << endl;
                 }
-                else
-                {
+                else{
                     printWordStats(topWords);
                 }
                 break;
             }
-            case 4:
+                case 4:
             {
                 auto it = paths.find(subreddit);
-                if (it == paths.end())
-                {
+                if (it == paths.end()){
                     cout << "Unable to locate the selected subreddit dataset." << endl;
                     break;
                 }
 
-                cout << "Listing bottom words for subreddit " << names[subreddit]<< endl;
+                cout << "Listing bottom words for subreddit" << endl;
                 auto bottomWords = getBottomWordsByAverageUpvotes(it->second, 15);
-                if (bottomWords.empty())
-                {
+                if (bottomWords.empty()){
                     cout << "No word statistics are available yet for this dataset." << endl;
                 }
-                else
-                {
+                else{
                     printWordStats(bottomWords);
                 }
                 break;

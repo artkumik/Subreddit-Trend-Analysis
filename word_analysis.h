@@ -2,13 +2,13 @@
 
 #include <string>
 #include <vector>
-#include <unordered_map>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
 #include <cctype>
 #include <iomanip>
 #include <iostream>
+#include <utility>
 #include "datasets.h"
 
 struct WordStats{
@@ -19,6 +19,131 @@ struct WordStats{
 };
 
 namespace detail{
+    class WordHashTable{
+    public:
+        explicit WordHashTable(std::size_t initialCapacity = 1024)
+            : buckets(nextPrime(initialCapacity)), count(0)
+        {
+        }
+
+        void addWord(const std::string &word, long long upvotes){
+            if (buckets.empty()){
+                buckets.resize(1031);
+            }
+
+            if (needsRehash()){
+                rehash(nextPrime(buckets.size() * 2));
+            }
+
+            std::size_t index = computeIndex(word);
+            while (buckets[index].occupied){
+                if (buckets[index].key == word){
+                    buckets[index].totalUpvotes += upvotes;
+                    buckets[index].occurrences += 1;
+                    return;
+                }
+                index = (index + 1) % buckets.size();
+            }
+
+            buckets[index].occupied = true;
+            buckets[index].key = word;
+            buckets[index].totalUpvotes = upvotes;
+            buckets[index].occurrences = 1;
+            ++count;
+        }
+
+        template <typename Func>
+        void forEach(Func func) const{
+            for (const auto &bucket : buckets){
+                if (bucket.occupied){
+                    func(bucket.key, bucket.totalUpvotes, bucket.occurrences);
+                }
+            }
+        }
+
+    private:
+        struct Bucket{
+            bool occupied = false;
+            std::string key;
+            long long totalUpvotes = 0;
+            long long occurrences = 0;
+        };
+
+        std::vector<Bucket> buckets;
+        std::size_t count;
+
+        static std::size_t nextPrime(std::size_t n){
+            if (n <= 2){
+                return 2;
+            }
+
+            if (n % 2 == 0){
+                ++n;
+            }
+
+            while (!isPrime(n)){
+                n += 2;
+            }
+            return n;
+        }
+
+        static bool isPrime(std::size_t n){
+            if (n < 2){
+                return false;
+            }
+            if (n % 2 == 0){
+                return n == 2;
+            }
+            for (std::size_t i = 3; i * i <= n; i += 2){
+                if (n % i == 0){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        bool needsRehash() const{
+            if (buckets.empty()){
+                return true;
+            }
+            return (count + 1) * 100 >= buckets.size() * 70;
+        }
+
+        void rehash(std::size_t newCapacity){
+            std::vector<Bucket> oldBuckets = std::move(buckets);
+            buckets.clear();
+            buckets.resize(newCapacity);
+            count = 0;
+
+            for (const auto &bucket : oldBuckets){
+                if (bucket.occupied){
+                    insertDuringRehash(bucket);
+                }
+            }
+        }
+
+        void insertDuringRehash(const Bucket &bucket){
+            std::size_t index = computeIndex(bucket.key);
+            while (buckets[index].occupied){
+                index = (index + 1) % buckets.size();
+            }
+
+            buckets[index].occupied = true;
+            buckets[index].key = bucket.key;
+            buckets[index].totalUpvotes = bucket.totalUpvotes;
+            buckets[index].occurrences = bucket.occurrences;
+            ++count;
+        }
+
+        std::size_t computeIndex(const std::string &word) const{
+            std::size_t hashValue = 0;
+            for (unsigned char ch : word){
+                hashValue ^= ((hashValue << 5) + ch + (hashValue >> 2));
+            }
+            return hashValue % buckets.size();
+        }
+    };
+
     inline bool isValidWord(const std::string &word){
         if (word.empty()){
             return false;
@@ -54,7 +179,7 @@ namespace detail{
             return {};
         }
 
-        std::unordered_map<std::string, std::pair<long long, long long>> wordData; // word -> {totalUpvotes, occurrences}
+        WordHashTable wordData;
 
         while (std::getline(file, line)){
             std::stringstream ss(line);
@@ -80,22 +205,14 @@ namespace detail{
             auto words = splitWords(title + " " + body);
 
             for (const auto &word : words){
-                auto &entry = wordData[word];
-                entry.first += upvotes;
-                entry.second += 1;
+                wordData.addWord(word, upvotes);
             }
         }
 
         std::vector<WordStats> stats;
-        stats.reserve(wordData.size());
-
-        for (const auto &item : wordData){
-            const auto &word = item.first;
-            long long totalUpvotes = item.second.first;
-            long long occurrences = item.second.second;
-
+        wordData.forEach([&](const std::string &word, long long totalUpvotes, long long occurrences){
             if (occurrences < static_cast<long long>(minOccurrences)){
-                continue;
+                return;
             }
 
             WordStats ws;
@@ -104,7 +221,7 @@ namespace detail{
             ws.occurrences = occurrences;
             ws.averageUpvotes = static_cast<double>(totalUpvotes) / static_cast<double>(occurrences);
             stats.push_back(ws);
-        }
+        });
 
         return stats;
     }
