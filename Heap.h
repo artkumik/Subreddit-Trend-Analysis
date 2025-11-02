@@ -9,8 +9,8 @@ using namespace std;
 struct Post {
     int upvotes;
     int downvotes;
-    std::string title;
-    std::string body;
+    string title;
+    string body;
 };
 
 struct MinUpvotes { // min-heap comparator
@@ -20,16 +20,16 @@ struct MaxUpvotes { // max-heap comparator
     bool operator()(const Post& a, const Post& b) const;
 };
 
-string getstring(std::string s); //helper
-void createLists(string path, std::size_t k, std::priority_queue<Post, std::vector<Post>, MaxUpvotes>& bottom15,
-    std::priority_queue<Post,std::vector<Post>, MinUpvotes>& top15); //creates a min-heap and max-heap for the posts
+string getstring(string s); //helper
+void createLists(string path, size_t k, priority_queue<Post, vector<Post>, MaxUpvotes>& bottom15,
+    priority_queue<Post,vector<Post>, MinUpvotes>& top15); //creates a min-heap and max-heap for the posts
 
-void createtopvector(std::priority_queue<Post, std::vector<Post>, MinUpvotes>& top15,
-                             std::vector<Post>& result); //creates vector for top 15 posts
+void createtopvector(priority_queue<Post, vector<Post>, MinUpvotes>& top15,
+                             vector<Post>& result); //creates vector for top 15 posts
 
-void createbottomvector(std::priority_queue<Post, std::vector<Post>, MaxUpvotes>& bottom15,
-                                std::vector<Post>& result); //creates vector for bottom 15 posts
-void printvector(std::vector<Post>& v); // print helper
+void createbottomvector(priority_queue<Post, vector<Post>, MaxUpvotes>& bottom15,
+                                vector<Post>& result); //creates vector for bottom 15 posts
+void printvector(vector<Post>& v); // print helper
 #endif //HEAP_H
 
 // function declarations
@@ -42,20 +42,20 @@ bool MaxUpvotes::operator()(const Post &a, const Post &b) const
     return a.upvotes < b.upvotes;
 }
 
-string getstring(std::string s)
+string getstring(string s)
 {
     s.erase(remove_if(s.begin(), s.end(), ::ispunct), s.end());
     transform(s.begin(), s.end(), s.begin(), ::tolower);
     return s;
 }
-void createLists(string path, std::size_t k, std::priority_queue<Post, std::vector<Post>, MaxUpvotes> &bottom15,
-                 std::priority_queue<Post, std::vector<Post>, MinUpvotes> &top15)
+void createLists(string path, size_t k, priority_queue<Post, vector<Post>, MaxUpvotes> &bottom15,
+                 priority_queue<Post, vector<Post>, MinUpvotes> &top15)
 {
     ifstream file(path);
 
     if (!file.is_open())
     {
-        std::cout << "error opening: " << path << std::endl;
+        cout << "error opening: " << path << endl;
         return;
     }
 
@@ -113,8 +113,8 @@ void createLists(string path, std::size_t k, std::priority_queue<Post, std::vect
     return;
 }
 
-void createtopvector(std::priority_queue<Post, std::vector<Post>, MinUpvotes> &top15,
-                     std::vector<Post> &result)
+void createtopvector(priority_queue<Post, vector<Post>, MinUpvotes> &top15,
+                     vector<Post> &result)
 {
     result.clear();
     result.reserve(top15.size());
@@ -123,12 +123,12 @@ void createtopvector(std::priority_queue<Post, std::vector<Post>, MinUpvotes> &t
         result.push_back(top15.top());
         top15.pop();
     }
-    std::sort(result.begin(), result.end(), [](const Post &a, const Post &b)
+    sort(result.begin(), result.end(), [](const Post &a, const Post &b)
               { return a.upvotes > b.upvotes; });
 }
 
-void createbottomvector(std::priority_queue<Post, std::vector<Post>, MaxUpvotes> &bottom15,
-                        std::vector<Post> &result)
+void createbottomvector(priority_queue<Post, vector<Post>, MaxUpvotes> &bottom15,
+                        vector<Post> &result)
 {
     result.clear();
     result.reserve(bottom15.size());
@@ -137,11 +137,11 @@ void createbottomvector(std::priority_queue<Post, std::vector<Post>, MaxUpvotes>
         result.push_back(bottom15.top());
         bottom15.pop();
     }
-    std::sort(result.begin(), result.end(), [](const Post &a, const Post &b)
+    sort(result.begin(), result.end(), [](const Post &a, const Post &b)
               { return a.upvotes < b.upvotes; });
 }
 
-void printvector(std::vector<Post> &v)
+void printvector(vector<Post> &v)
 {
     for (size_t i = 0; i < v.size(); i++)
     {

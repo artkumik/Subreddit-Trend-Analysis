@@ -10,7 +10,7 @@
 #include <map>
 #include <queue>
 #include <iomanip>
-#include "Heap.h"
+#include "heap.h"
 #include "datasets.h"
 #include "word_analysis.h"
 using namespace std;
